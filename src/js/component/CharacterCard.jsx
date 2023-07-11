@@ -16,6 +16,7 @@ const CharacterCard = ({ id }) => {
 
         fetchData();
     }, []);
+    
 
     const addToFavorites = () => {
         actions.addToFavorites(characterData);
@@ -58,7 +59,7 @@ const CharacterCard = ({ id }) => {
                     </Link>
                     <Link to="/">
                         <button onClick={addToFavorites} type="button" className="m-3 btn btn-outline-warning">
-                            Favorites <i className="fa fa-solid fa-heart"></i>
+                            <i className="fa fa-solid fa-heart"></i>
                         </button>
                     </Link>
                 </div>

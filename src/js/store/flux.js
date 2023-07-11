@@ -4,19 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			characterList: [],
 			selectedItem: {},
-			favorites: [],
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			favorites: []
 		},
 
 		actions: {
@@ -54,9 +42,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			addToFavorites: character => {
 				const store = getStore();
-				const favorites = [...store.favorites, character];
+				const favoriteCharacter = {
+					name: character.name,
+					gender: character.gender,
+					eye_color: character.eye_color,
+					hair_color: character.hair_color,
+					description: character.description
+				};
+				const favorites = [...store.favorites, favoriteCharacter];
+				setStore({ favorites });
+				// Guardar los favoritos en el almacenamiento local
+				localStorage.setItem('favorites', JSON.stringify(favorites));
+			},
+
+
+			setFavorites: favorites => {
 				setStore({ favorites });
 			},
+
+			removeFromFavorites: character => {
+				const store = getStore();
+				const updatedFavorites = store.favorites.filter(
+					favorite => favorite.name !== character.name
+				);
+				setStore({ favorites: updatedFavorites });
+
+				// Guardar los favoritos actualizados en el almacenamiento local
+				localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+			},
+
 
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
