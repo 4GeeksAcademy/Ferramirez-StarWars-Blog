@@ -3,98 +3,74 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			characterList: [],
+			planetsList: [],
+			vehicleList: [],
 			selectedItem: {},
-			favorites: []
 		},
 
 		actions: {
-			// Getting Characters function
+			// Getting Characters functions
 			getCharacters: async () => {
 				try {
 					const response = await fetch(`https://www.swapi.tech/api/people/`);
 					const data = await response.json();
-					setStore({ characterList: data.results });
-					console.log(data.results); // Mostrar los datos en la consola
+					const { results } = data;
+					setStore({ characterList: results });
 				} catch (error) {
 					console.error("Error getting contacts:", error);
 				}
 			},
 
-
 			getCharacterData: async (id) => {
 				try {
-					const response = await fetch(`https://www.swapi.tech/api/people/${id}`);
+					const response = await fetch(`https://www.swapi.tech/api/people/${id}/`);
 					const data = await response.json();
-					const characterData = {
-						name: data.result.properties.name,
-						gender: data.result.properties.gender,
-						eye_color: data.result.properties.eye_color,
-						hair_color: data.result.properties.hair_color,
-						description: data.result.description
-					};
-					console.log(characterData);
+					const { name, gender, eye_color, hair_color, description } = data.result.properties;
+					const characterData = { id, name, gender, eye_color, hair_color, description };
 					return characterData;
 				} catch (error) {
 					console.error("Error getting character data:", error);
 				}
 			},
 
-
-			addToFavorites: character => {
-				const store = getStore();
-				const favoriteCharacter = {
-					name: character.name,
-					gender: character.gender,
-					eye_color: character.eye_color,
-					hair_color: character.hair_color,
-					description: character.description
-				};
-				const favorites = [...store.favorites, favoriteCharacter];
-				setStore({ favorites });
-				// Guardar los favoritos en el almacenamiento local
-				localStorage.setItem('favorites', JSON.stringify(favorites));
+			// Getting Planets functions
+			getPlanets: async () => {
+				try {
+					const response = await fetch(`https://www.swapi.tech/api/planets/`);
+					const data = await response.json();
+					const { results } = data;
+					setStore({ planetsList: results });
+				} catch (error) {
+					console.error("Error getting contacts:", error);
+				}
 			},
 
-
-			setFavorites: favorites => {
-				setStore({ favorites });
+			getPlanetData: async (id) => {
+				try {
+					const response = await fetch(`https://www.swapi.tech/api/planets/${id}/`);
+					const data = await response.json();
+					const { uid, name, population } = data.result.properties;
+					const planetData = { id, uid, name, population };
+					return planetData;
+					ß
+				} catch (error) {
+					console.error("Error getting planet data:", error);
+				}
 			},
 
-			removeFromFavorites: character => {
-				const store = getStore();
-				const updatedFavorites = store.favorites.filter(
-					favorite => favorite.name !== character.name
-				);
-				setStore({ favorites: updatedFavorites });
+			// //Geting Vehicles Functions
+			// getVehicles: async () => {
+			// 	try {
+			// 		const response = await fetch(`https://www.swapi.tech/api/vehicles/`);
+			// 		const data = await response.json();
+			// 		const { results } = data;
+			// 		setStore({ vehicleList: results });
+			// 		console.log(results)
+			// 	} catch (error) {
+			// 		console.error("Error getting contacts:", error);
+			// 	}
+			// },
 
-				// Guardar los favoritos actualizados en el almacenamiento local
-				localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-			},
-
-
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
 		}
 	};
 };

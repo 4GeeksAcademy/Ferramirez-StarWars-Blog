@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+
 import { Context } from "../store/appContext";
-import starWarsLogo from "../../img/star-wars.jpg";
+import { isValidField } from "../store/utils.jsx";
+
+import starWarsImg from "../../img/star-wars-placeholder.jpg";
 
 
-export const CardInfo = ({ }) => {
+export const CardInfo = () => {
     const { actions } = useContext(Context);
     const [characterData, setCharacterData] = useState(null);
     const { id } = useParams();
@@ -16,18 +19,14 @@ export const CardInfo = ({ }) => {
         };
 
         fetchData();
-    }, []);
-
-    const isValidField = (field) => {
-        return field && field !== "n/a";
-    };
+    }, [actions, id]);
 
     return (
         <div className="container">
             <div className="card mb-3">
                 <div className="row no-gutters">
                     <div className="col-md-4">
-                        <img src={starWarsLogo} className="card-img" alt="..." />
+                        <img src={starWarsImg} className="card-img" alt="..." />
                     </div>
                     <div className="col-md-8">
                         <div className="card-body">
