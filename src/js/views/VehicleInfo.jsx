@@ -6,16 +6,15 @@ import { isValidField } from "../store/utils.jsx";
 
 import starWarsImg from "../../img/star-wars-placeholder.jpg";
 
-
-export const CardInfo = () => {
+export const VehicleInfo = () => {
     const { actions } = useContext(Context);
-    const [characterData, setCharacterData] = useState(null);
+    const [vehicleData, setVehicleData] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await actions.getCharacterData(id);
-            setCharacterData(data);
+            const data = await actions.getVehicleData(id);
+            setVehicleData(data);
         };
 
         fetchData();
@@ -30,17 +29,19 @@ export const CardInfo = () => {
                     </div>
                     <div className="col-md-8">
                         <div className="card-body">
-                            {characterData ? (
+                            {vehicleData ? (
                                 <>
-                                    <h5 className="card-title">{characterData.name}</h5>
-                                    {isValidField(characterData.description) ? (
-                                        <p className="card-text">{characterData.description}</p>
+                                    <h5 className="card-title">{vehicleData.name}</h5>
+                                    {isValidField(vehicleData.description) ? (
+                                        <p className="card-text">{vehicleData.description}</p>
                                     ) : (
-                                        <p className="card-text"><small className="text-muted">No description available</small></p>
+                                        <p className="card-text">
+                                            <small className="text-muted">No description available</small>
+                                        </p>
                                     )}
 
-                                    {Object.entries(characterData).map(([key, value]) => {
-                                        if (key !== 'name' && key !== 'description') {
+                                    {Object.entries(vehicleData).map(([key, value]) => {
+                                        if (key !== "name" && key !== "description") {
                                             return (
                                                 <p key={key} className="card-text">
                                                     <strong>{key}: </strong>
@@ -52,18 +53,17 @@ export const CardInfo = () => {
                                     })}
                                 </>
                             ) : (
-                                <p>Loading character data...</p>
+                                <p>Loading vehicle data...</p>
                             )}
                         </div>
-
-
                     </div>
                     <Link to="/">
-                        <button type="button" className="btn btn-link">Back to Contact List</button>
+                        <button type="button" className="btn btn-link">
+                            Back to Contact List
+                        </button>
                     </Link>
                 </div>
             </div>
         </div>
     );
-
 };

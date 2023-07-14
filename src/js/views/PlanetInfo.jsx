@@ -6,16 +6,15 @@ import { isValidField } from "../store/utils.jsx";
 
 import starWarsImg from "../../img/star-wars-placeholder.jpg";
 
-
-export const CardInfo = () => {
+export const PlanetInfo = () => {
     const { actions } = useContext(Context);
-    const [characterData, setCharacterData] = useState(null);
+    const [planetData, setPlanetData] = useState(null);
     const { id } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await actions.getCharacterData(id);
-            setCharacterData(data);
+            const data = await actions.getPlanetData(id);
+            setPlanetData(data);
         };
 
         fetchData();
@@ -30,17 +29,19 @@ export const CardInfo = () => {
                     </div>
                     <div className="col-md-8">
                         <div className="card-body">
-                            {characterData ? (
+                            {planetData ? (
                                 <>
-                                    <h5 className="card-title">{characterData.name}</h5>
-                                    {isValidField(characterData.description) ? (
-                                        <p className="card-text">{characterData.description}</p>
+                                    <h5 className="card-title">{planetData.name}</h5>
+                                    {isValidField(planetData.description) ? (
+                                        <p className="card-text">{planetData.description}</p>
                                     ) : (
-                                        <p className="card-text"><small className="text-muted">No description available</small></p>
+                                        <p className="card-text">
+                                            <small className="text-muted">No description available</small>
+                                        </p>
                                     )}
 
-                                    {Object.entries(characterData).map(([key, value]) => {
-                                        if (key !== 'name' && key !== 'description') {
+                                    {Object.entries(planetData).map(([key, value]) => {
+                                        if (key !== "name" && key !== "description") {
                                             return (
                                                 <p key={key} className="card-text">
                                                     <strong>{key}: </strong>
@@ -52,18 +53,17 @@ export const CardInfo = () => {
                                     })}
                                 </>
                             ) : (
-                                <p>Loading character data...</p>
+                                <p>Loading planet data...</p>
                             )}
                         </div>
-
-
                     </div>
                     <Link to="/">
-                        <button type="button" className="btn btn-link">Back to Contact List</button>
+                        <button type="button" className="btn btn-link">
+                            Back to Contact List
+                        </button>
                     </Link>
                 </div>
             </div>
         </div>
     );
-
 };

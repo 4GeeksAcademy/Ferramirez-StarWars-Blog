@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext.js";
 import "../../styles/home.css"
 
-import { CharactersDetails } from "../component/CharactersList.jsx";
+import { CharactersList } from "../component/CharactersList.jsx";
 import { PlanetsList } from "../component/PlanetsList.jsx";
 import { VehiclesList } from "../component/VehiclesList.jsx";
 
@@ -41,7 +41,7 @@ export const Home = () => {
 				<div className="row flex-row flex-nowrap ">
 					{
 						store.characterList.map((character) => (
-							<CharactersDetails key={character.uid} id={character.uid} name={character.name} />
+							<CharactersList key={character.uid} id={character.uid} name={character.name} />
 						))
 					}
 

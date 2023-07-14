@@ -6,7 +6,7 @@ import { isValidField } from "../store/utils.jsx";
 
 import starWarsImg from "../../img/star-wars-placeholder.jpg";
 
-export const CharactersDetails = ({ id }) => {
+export const CharactersList = ({ id, name }) => {
     const { actions } = useContext(Context);
     const [characterData, setCharacterData] = useState([]);
 

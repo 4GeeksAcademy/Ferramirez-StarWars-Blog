@@ -24,8 +24,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const response = await fetch(`https://www.swapi.tech/api/people/`);
 					const data = await response.json();
 					const { results } = data;
-					const updatedCharacterList = results.map(character => ({ ...character, timestamp: Date.now() }));
+					const updatedCharacterList = results.map(character => ({ ...character, timestamp: Date.now(), id: character.uid }));
 					setStore({ characterList: updatedCharacterList });
+
+					for (const character of updatedCharacterList) {
+						await getActions().getCharacterData(character.id);
+					}
 
 					await new Promise(resolve => setTimeout(resolve, 1000));
 				} catch (error) {
@@ -38,17 +42,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const response = await fetch(`https://www.swapi.tech/api/people/${id}/`);
 					const data = await response.json();
-					const { name, gender, eye_color, hair_color, description, height, mass, skin_color, birth_year, homeworldurl } = data.result.properties;
-					const characterData = { id, name, gender, eye_color, hair_color, description, height, mass, skin_color, birth_year, homeworldurl };
+					const { properties, description } = data.result;
+					const characterData = { ...properties, description };
 					return characterData;
 				} catch (error) {
 					console.error("Error getting character data:", error);
 				}
 			},
 
-			getCharacterId: async (name) => {
+
+			getCharacterId: async (id) => {
 				try {
-					const response = await fetch(`https://www.swapi.tech/api/people/?name=${name}`);
+					const response = await fetch(`https://www.swapi.tech/api/people/${id}/`);
 					const data = await response.json();
 					const characterId = data.results[0]?.uid || null;
 					return characterId;
@@ -56,7 +61,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error getting character ID:", error);
 				}
 			},
-			
+
 			// GET ALL PLANETS
 			getPlanets: async () => {
 				try {
@@ -80,16 +85,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// GET PLANET DATA
 			getPlanetData: async (id) => {
 				try {
-					const response = await fetch(`https://www.swapi.tech/api/planets/${id}/`);
+					const response = await fetch(`https://www.swapi.tech/api/planets/${id}`);
 					const data = await response.json();
-					const { name, population, diameter, rotation_period, orbital_period, gravity, climate, terrain, surface_water, url } = data.result.properties;
-					const planetData = { id, name, population, diameter, rotation_period, orbital_period, gravity, climate, terrain, surface_water, url };
+					const { description } = data.result;
+					const { name, population, diameter, rotation_period, orbital_period, gravity, climate, terrain, surface_water } = data.result.properties;
+					const planetData = { id, name, description, population, diameter, rotation_period, orbital_period, gravity, climate, terrain, surface_water };
 					return planetData;
 				} catch (error) {
 					console.error("Error getting planet data:", error);
 				}
 			},
-
+			
 			// GET ALL VEHICLES
 			getVehicles: async () => {
 				try {

@@ -36,7 +36,7 @@ export const PlanetsList = ({ id }) => {
                 </ul>
             </div>
             <div className="border-0 d-flex justify-content-between">
-                <Link to={`/cardInfo/${id}`}>
+                <Link to={`/planetInfo/${id}`}>
                     <button type="button" className="m-3 btn btn-outline-primary">
                         Learn more!
                     </button>
