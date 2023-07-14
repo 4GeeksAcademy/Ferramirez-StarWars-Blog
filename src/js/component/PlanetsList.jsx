@@ -43,6 +43,7 @@ export const PlanetsList = ({ id }) => {
                 </Link>
                 <Link to="/">
                     <button
+                        onClick={() => actions.addToFavorites(planetData)}
                         type="button"
                         className="m-3 btn btn-outline-warning"
                     >

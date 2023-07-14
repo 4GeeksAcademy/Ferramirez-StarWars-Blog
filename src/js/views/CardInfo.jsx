@@ -9,17 +9,25 @@ import starWarsImg from "../../img/star-wars-placeholder.jpg";
 
 export const CardInfo = () => {
     const { actions } = useContext(Context);
-    const [characterData, setCharacterData] = useState(null);
-    const { id } = useParams();
+    const [itemData, setItemData] = useState(null);
+    const { type, name } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await actions.getCharacterData(id);
-            setCharacterData(data);
+            let data;
+
+            if (type === "characters") {
+                data = await actions.getCharacterData(name);
+            } else if (type === "planets") {
+                data = await actions.getPlanetData(name);
+            } else if (type === "vehicles") {
+                data = await actions.getVehicleData(name);
+            }
+            setItemData(data);
         };
 
         fetchData();
-    }, [actions, id]);
+    }, [type, name]);
 
     return (
         <div className="container">
@@ -30,11 +38,11 @@ export const CardInfo = () => {
                     </div>
                     <div className="col-md-8">
                         <div className="card-body">
-                            {characterData ? (
+                            {itemData ? (
                                 <>
-                                    <h5 className="card-title">{characterData.name}</h5>
-                                    {isValidField(characterData.description) ? (
-                                        <p className="card-text">{characterData.description}</p>
+                                    <h5 className="card-title">{itemData.name}</h5>
+                                    {isValidField(itemData.description) ? (
+                                        <p className="card-text">{itemData.description}</p>
                                     ) : (
                                         <p className="card-text"><small className="text-muted">No description available</small></p>
                                     )}
@@ -42,6 +50,7 @@ export const CardInfo = () => {
                             ) : (
                                 <p>Loading character data...</p>
                             )}
+
                         </div>
                     </div>
                     <Link to="/">

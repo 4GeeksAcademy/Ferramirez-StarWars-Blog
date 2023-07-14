@@ -1,11 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 import starWarsLogo from "../../img/star-wars-logo2.png"
 
 export const Navbar = () => {
-	// Contexto y acciones
+	const { store, actions } = useContext(Context);
+
+	const handleRemoveFavorite = name => {
+		actions.removeFromFavorites(name);
+	};
 
 	return (
 		<nav className="navbar navbar-dark bg-black ps-4 pe-3">
@@ -29,9 +33,18 @@ export const Navbar = () => {
 					<div className="offcanvas-body">
 						<div className="d-flex">
 							<ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-								<li className="nav-item">
-									Something
-								</li>
+								{
+									store.favorites.map(item => (
+										<li className="nav-item d-flex justify-content-between" key={`${item.id}-${item.uid}`}>
+											<Link to={`/cardInfo/${item.name}`}>{item.name}</Link>
+											<button
+												className="btn text-danger btn-sm ms-2"
+												onClick={() => handleRemoveFavorite(item.name)}
+											>
+												<i className="fa fa-solid fa-trash"></i>
+											</button>
+										</li>
+									))}
 							</ul>
 						</div>
 					</div>

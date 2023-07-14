@@ -4,7 +4,7 @@ import "../../styles/home.css"
 
 import { CharactersDetails } from "../component/CharactersList.jsx";
 import { PlanetsList } from "../component/PlanetsList.jsx";
-
+import { VehiclesList } from "../component/VehiclesList.jsx";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
@@ -23,6 +23,14 @@ export const Home = () => {
 
 	const getPlanetsList = () => {
 		actions.getPlanets();
+	}
+
+	useEffect(() => {
+		getVehicleList();
+	}, []);
+
+	const getVehicleList = () => {
+		actions.getVehicles();
 	}
 
 	return (
@@ -50,17 +58,19 @@ export const Home = () => {
 
 				</div>
 			</div>
-			{/* <div className="container my-2 horizontal-scrollable">
+			<div className="container my-2 horizontal-scrollable">
 				<h2 className="font-weight-light text-danger">Vehicles</h2>
 				<div className="row flex-row flex-nowrap ">
+
 					{
-						store.characterList.map((character) => (
-							<CharactersDetails key={character.uid} id={character.uid} name={character.name} />
+						store.vehiclesList.map((vehicle) => (
+							<VehiclesList key={vehicle.uid} id={vehicle.uid} name={vehicle.name} />
 						))
 					}
 
+
 				</div>
-			</div> */}
+			</div>
 		</div>
 
 	);

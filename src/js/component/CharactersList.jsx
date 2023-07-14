@@ -60,6 +60,7 @@ export const CharactersDetails = ({ id }) => {
                 </Link>
                 <Link to="/">
                     <button
+                        onClick={() => actions.addToFavorites(characterData)}
                         type="button"
                         className="m-3 btn btn-outline-warning"
                     >
