@@ -37,7 +37,7 @@ export const Home = () => {
 
 		<div className="container-fuid mt-3">
 			<div className="container my-2 horizontal-scrollable">
-				<h2 className="font-weight-light text-danger">Characters</h2>
+				<h2 className="font-weight-light text-light">Characters</h2>
 				<div className="row flex-row flex-nowrap ">
 					{
 						store.characterList.map((character) => (
@@ -47,7 +47,7 @@ export const Home = () => {
 
 				</div>
 			</div>
-			<div className="container my-2 horizontal-scrollable">
+			{/* <div className="container my-2 horizontal-scrollable">
 				<h2 className="font-weight-light text-danger">Planets</h2>
 				<div className="row flex-row flex-nowrap ">
 					{
@@ -70,7 +70,7 @@ export const Home = () => {
 
 
 				</div>
-			</div>
+			</div> */}
 		</div>
 
 	);

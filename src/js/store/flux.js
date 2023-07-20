@@ -6,10 +6,78 @@ const getState = ({ getStore, getActions, setStore }) => {
 			planetsList: [],
 			vehiclesList: [],
 			selectedItem: {},
-			favorites: []
+			favorites: [],
+			authToken: sessionStorage.getItem('token') || null,
+			isAuthenticated: false
+
 		},
 
 		actions: {
+			// Add contact function
+			createUser: async (newUser) => {
+				try {
+					const response = await fetch("https://ferrami-cautious-goldfish-5pg5p5p96jxf49rq-3000.preview.app.github.dev/user", {
+						method: "POST",
+						body: JSON.stringify(newUser),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await response.json();
+					console.log("Contact has been added:", data);
+					// Handle the response or update the store with the new contact as needed
+				} catch (error) {
+					console.error("Error adding contact:", error);
+				}
+			},
+
+			login: async ({ email, password }) => {
+				try {
+					console.log(email, password)
+					const response = await fetch("https://ferrami-cautious-goldfish-5pg5p5p96jxf49rq-3000.preview.app.github.dev/token", {
+						method: 'POST',
+						body: JSON.stringify({ email, password }),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+
+					if (!response.ok) {
+						throw new Error("Invalid username or password");
+					}
+
+					const data = await response.json();
+					const token = data.token;
+
+					sessionStorage.setItem('token', token);
+
+					setStore({ authToken: token, isAuthenticated: true });
+
+				} catch (error) {
+					console.error('Error in login:', error.message);
+				}
+			},
+
+			logout: () => {
+				sessionStorage.removeItem('token');
+				setStore({ authToken: null, isAuthenticated: false });
+			},
+
+			checkAuth: () => {
+				try {
+					const authToken = sessionStorage.getItem('token');
+					if (authToken) {
+						setStore({ authToken, isAuthenticated: true });
+					} else {
+						setStore({ authToken: null, isAuthenticated: false });
+					}
+				} catch (error) {
+					console.error('Error while checking authentication:', error.message);
+					setStore({ authToken: null, isAuthenticated: false });
+				}
+			},
+
+
 			// Getting Characters functions
 			getCharacters: async () => {
 				try {
@@ -43,7 +111,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const response = await fetch(`https://www.swapi.tech/api/people/${id}/`);
 					const data = await response.json();
 					const { properties, description } = data.result;
-					const characterData = { ...properties, description };
+					const characterData = { ...properties, description, id }; // Include the 'id' in the returned characterData object
 					return characterData;
 				} catch (error) {
 					console.error("Error getting character data:", error);
@@ -95,7 +163,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error getting planet data:", error);
 				}
 			},
-			
+
 			// GET ALL VEHICLES
 			getVehicles: async () => {
 				try {

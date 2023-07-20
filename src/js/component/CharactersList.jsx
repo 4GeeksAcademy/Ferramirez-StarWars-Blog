@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { isValidField } from "../store/utils.jsx";
 
-import starWarsImg from "../../img/star-wars-placeholder.jpg";
-
 export const CharactersList = ({ id, name }) => {
     const { actions } = useContext(Context);
     const [characterData, setCharacterData] = useState([]);
@@ -19,6 +17,7 @@ export const CharactersList = ({ id, name }) => {
         fetchData();
     }, []);
 
+    const characterImg = `https://starwars-visualguide.com/assets/img/characters/${id}.jpg`
 
     if (!characterData) {
         return null;
@@ -26,7 +25,7 @@ export const CharactersList = ({ id, name }) => {
 
     return (
         <div className="card m-3 rounded-3" style={{ width: "18rem" }}>
-            <img src={starWarsImg} className="card-img-top" alt="Star Wars" />
+            <img src={characterImg} className="card-img-top" alt="Star Wars" />
             <div className="card-body p-0 border-0">
                 <ul className="list-group bg-dark border-0">
                     <li className="bg-dark rounded-3 list-group-item text-warning fs-3">
